@@ -109,7 +109,7 @@ const ProductContainer = () => {
                                 <Typography>{"Full Name"}</Typography>
                                 <Input
                                     inputType="text"
-                                    className="block border-neutral-400 border"
+                                    className="block border-neutral-400 border bg-gray-300"
                                     name={"fullName"}
                                     value={formMik.values.fullName}
                                     onChange={formMik.handleChange("fullName")}
@@ -124,7 +124,7 @@ const ProductContainer = () => {
                                 <Typography>{"Email Address"}</Typography>
                                 <Input
                                     inputType="email"
-                                    className="block border-neutral-400 border"
+                                    className="block border-neutral-400 border bg-gray-300"
                                     name={"email"}
                                     value={formMik.values.email}
                                     onChange={formMik.handleChange("email")}
@@ -139,7 +139,7 @@ const ProductContainer = () => {
                                 <Typography>{"Date of Birth"}</Typography>
                                 <Input
                                     inputType="date"
-                                    className="block border-neutral-400 border"
+                                    className="block border-neutral-400 border bg-gray-300"
                                     name={"birthDate"}
                                     value={formMik.values.birthDate}
                                     onChange={formMik.handleChange("birthDate")}
@@ -159,7 +159,7 @@ const ProductContainer = () => {
                                 <Input
                                     inputType="textarea"
                                     rows={3}
-                                    className="block border-neutral-400 border"
+                                    className="block border-neutral-400 border bg-gray-300"
                                     name={"streetAddr"}
                                     value={formMik.values.streetAddr}
                                     onChange={formMik.handleChange(
@@ -176,7 +176,7 @@ const ProductContainer = () => {
                                 <Typography>{"City"}</Typography>
                                 <Input
                                     inputType="text"
-                                    className="block border-neutral-400 border"
+                                    className="block border-neutral-400 border bg-gray-300"
                                     name={"city"}
                                     value={formMik.values.city}
                                     onChange={formMik.handleChange("city")}
@@ -191,7 +191,7 @@ const ProductContainer = () => {
                                 <Typography>{"State"}</Typography>
                                 <Input
                                     inputType="text"
-                                    className="block border-neutral-400 border"
+                                    className="block border-neutral-400 border bg-gray-300"
                                     name={"state"}
                                     value={formMik.values.state}
                                     onChange={formMik.handleChange("state")}
@@ -206,7 +206,7 @@ const ProductContainer = () => {
                                 <Typography>{"Zip Code"}</Typography>
                                 <Input
                                     inputType="number"
-                                    className="block border-neutral-400 border"
+                                    className="block border-neutral-400 border bg-gray-300"
                                     name={"zipCode"}
                                     value={formMik.values.zipCode}
                                     onChange={formMik.handleChange("zipCode")}
@@ -225,7 +225,7 @@ const ProductContainer = () => {
                                 <Typography>{"Your Username"}</Typography>
                                 <Input
                                     inputType="text"
-                                    className="block border-neutral-400 border"
+                                    className="block border-neutral-400 border bg-gray-300"
                                     name={"userName"}
                                     value={formMik.values.userName}
                                     onChange={formMik.handleChange("userName")}
@@ -240,7 +240,7 @@ const ProductContainer = () => {
                                 <Typography>{"Your Password"}</Typography>
                                 <Input
                                     inputType="password"
-                                    className="block border-neutral-400 border"
+                                    className="block border-neutral-400 border bg-gray-300"
                                     name={"passWord"}
                                     value={formMik.values.passWord}
                                     onChange={formMik.handleChange("passWord")}
