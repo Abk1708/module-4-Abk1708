@@ -1,7 +1,7 @@
 // import { ProductContainer } from "@/Container";
 import "./App.css";
 import { Outlet } from "react-router-dom";
-import { NavBar } from "@/Component";
+// import { NavBar } from "@/Component";
 
 function App() {
     return (
