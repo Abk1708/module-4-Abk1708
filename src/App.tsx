@@ -1,5 +1,7 @@
-import { ProductContainer } from "@/Container";
+// import { ProductContainer } from "@/Container";
 import "./App.css";
+import { Outlet } from "react-router-dom";
+import { NavBar } from "@/Component";
 
 function App() {
     return (
@@ -7,7 +9,9 @@ function App() {
             <h1 className="text-gray-600 body-font font-orbitron">
                 Account Registration Forms
             </h1>
-            <ProductContainer />
+            {/* <NavBar /> */}
+            <Outlet />
+            {/* <ProductContainer /> */}
         </div>
     );
 }

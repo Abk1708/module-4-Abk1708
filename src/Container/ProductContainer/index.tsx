@@ -1,87 +1,62 @@
-import { Button, Card, Input, Typography } from "@/Component";
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useFormik } from "formik";
 import * as yup from "yup";
-
-interface DataProps {
-    fullName: string;
-    email: string;
-    birthDate: string;
-    streetAddr: string;
-    city: string;
-    state: string;
-    zipCode: number;
-    userName: string;
-    passWord: string;
-}
+import { useNavigate } from "react-router-dom";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/Component/ui/card";
+import { Input } from "@/Component/ui/input";
+import { Button } from "@/Component/ui/button";
+import { Label } from "@/Component/ui/label";
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 
 const ProductContainer = () => {
-    const [users, setUsers] = useState<DataProps[]>([]);
-    const [selectedUser, setSelectedUser] = useState<DataProps>();
-    const [step, setStep] = useState<number>(1);
+    const navigate = useNavigate();
 
-    const handleNext = () => {
-        if (step === 3) {
-            return;
-        }
-        setStep((prevState) => prevState + 1);
-    };
+    const submitSignIn = async (user: { email: any; passWord: any }) => {
+        const response = await fetch(
+            "https://mock-api.arikmpt.com/api/user/login",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: user.email,
+                    password: user.passWord,
+                }),
+            }
+        );
 
-    const handlePrevious = () => {
-        if (step === 1) {
-            return;
+        const data = await response.json();
+        console.log(data);
+        if (data?.data.token) {
+            localStorage.setItem("token", data.data.token);
         }
-        setStep((prevState) => prevState - 1);
     };
 
     const formMik = useFormik({
-        initialValues: selectedUser ?? {
-            fullName: "",
+        initialValues: {
             email: "",
-            birthDate: "",
-            streetAddr: "",
-            city: "",
-            state: "",
-            zipCode: 12345,
-            userName: "",
             passWord: "",
         },
         onSubmit: (values, { resetForm }) => {
-            const updatedUsers = [...users, values];
-            setSelectedUser(values);
-            setUsers(updatedUsers);
-            alert("Your Data has been successfully submitted!");
-            console.log("Inputs Array:", users);
-            formMik.setValues({
-                fullName: "",
-                email: "",
-                birthDate: "",
-                streetAddr: "",
-                city: "",
-                state: "",
-                zipCode: 12345,
-                userName: "",
-                passWord: "",
-            });
+            console.log(values);
+            submitSignIn(values);
             resetForm();
-            setStep(1);
         },
+
         validationSchema: yup.object({
-            fullName: yup.string().required("Please enter your full name."),
             email: yup
                 .string()
                 .email("Email is not valid")
                 .required("Valid email is required."),
-            birthDate: yup.date().required("Please enter your date of birth."),
-            streetAddr: yup
-                .string()
-                .required("Please enter your street address."),
-            city: yup.string().required("Please enter your city origin."),
-            state: yup.string().required("Please enter your state origin."),
-            zipCode: yup.number().required("Please enter your ZipCode."),
-            userName: yup.string().required("Please enter your UserName."),
             passWord: yup
                 .string()
                 .matches(passwordRules, {
@@ -91,189 +66,63 @@ const ProductContainer = () => {
                     "Password must at least have 5 character, 1 upper case letter, 1 lower case letter, 1 numeric digit."
                 ),
         }),
-        enableReinitialize: true,
     });
 
+    const { errors, values, handleChange, handleSubmit } = formMik;
+    const { email, passWord } = values;
+
     return (
-        <Card
-            border
-            className={
-                "flex flex-col gap-2.5 bg-gradient-to-r from-stone-900 via-green-600 to-slate-400"
-            }
-        >
-            <Card border>
-                <form onSubmit={formMik.handleSubmit}>
-                    {step === 1 && (
+        <>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Login Form</CardTitle>
+                    <CardDescription>
+                        Please input your registered credential to log in.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleSubmit} action="#" method="POST">
                         <div>
                             <div>
-                                <Typography>{"Full Name"}</Typography>
+                                <Label htmlFor="email">Email</Label>
                                 <Input
-                                    inputType="text"
-                                    className="block border-neutral-400 border bg-gray-300"
-                                    name={"fullName"}
-                                    value={formMik.values.fullName}
-                                    onChange={formMik.handleChange("fullName")}
+                                    name="email"
+                                    type="email"
+                                    placeholder="@john.com"
+                                    value={email}
+                                    onChange={handleChange("email")}
+                                    required
                                 />
-                                {formMik.errors.fullName && (
-                                    <Typography>
-                                        {formMik.errors.fullName}
-                                    </Typography>
-                                )}
+                                {errors.email && <p>{errors.email}</p>}
                             </div>
                             <div>
-                                <Typography>{"Email Address"}</Typography>
+                                <Label htmlFor="passWord">Email</Label>
                                 <Input
-                                    inputType="email"
-                                    className="block border-neutral-400 border bg-gray-300"
-                                    name={"email"}
-                                    value={formMik.values.email}
-                                    onChange={formMik.handleChange("email")}
+                                    name="passWord"
+                                    type="password"
+                                    placeholder="@mail.com"
+                                    value={passWord}
+                                    onChange={handleChange("passWord")}
+                                    required
                                 />
-                                {formMik.errors.email && (
-                                    <Typography>
-                                        {formMik.errors.email}
-                                    </Typography>
-                                )}
+                                {errors.passWord && <p>{errors.passWord}</p>}
                             </div>
-                            <div className="my-4">
-                                <Typography>{"Date of Birth"}</Typography>
-                                <Input
-                                    inputType="date"
-                                    className="block border-neutral-400 border bg-gray-300"
-                                    name={"birthDate"}
-                                    value={formMik.values.birthDate}
-                                    onChange={formMik.handleChange("birthDate")}
-                                />
-                                {formMik.errors.birthDate && (
-                                    <Typography>
-                                        {formMik.errors.birthDate}
-                                    </Typography>
-                                )}
-                            </div>
+                            <Button type="submit">Log In</Button>
                         </div>
-                    )}
-                    {step === 2 && (
-                        <div>
-                            <div>
-                                <Typography>{"Street Address"}</Typography>
-                                <Input
-                                    inputType="textarea"
-                                    rows={3}
-                                    className="block border-neutral-400 border bg-gray-300"
-                                    name={"streetAddr"}
-                                    value={formMik.values.streetAddr}
-                                    onChange={formMik.handleChange(
-                                        "streetAddr"
-                                    )}
-                                />
-                                {formMik.errors.fullName && (
-                                    <Typography>
-                                        {formMik.errors.fullName}
-                                    </Typography>
-                                )}
-                            </div>
-                            <div>
-                                <Typography>{"City"}</Typography>
-                                <Input
-                                    inputType="text"
-                                    className="block border-neutral-400 border bg-gray-300"
-                                    name={"city"}
-                                    value={formMik.values.city}
-                                    onChange={formMik.handleChange("city")}
-                                />
-                                {formMik.errors.city && (
-                                    <Typography>
-                                        {formMik.errors.city}
-                                    </Typography>
-                                )}
-                            </div>
-                            <div>
-                                <Typography>{"State"}</Typography>
-                                <Input
-                                    inputType="text"
-                                    className="block border-neutral-400 border bg-gray-300"
-                                    name={"state"}
-                                    value={formMik.values.state}
-                                    onChange={formMik.handleChange("state")}
-                                />
-                                {formMik.errors.state && (
-                                    <Typography>
-                                        {formMik.errors.state}
-                                    </Typography>
-                                )}
-                            </div>
-                            <div>
-                                <Typography>{"Zip Code"}</Typography>
-                                <Input
-                                    inputType="number"
-                                    className="block border-neutral-400 border bg-gray-300"
-                                    name={"zipCode"}
-                                    value={formMik.values.zipCode}
-                                    onChange={formMik.handleChange("zipCode")}
-                                />
-                                {formMik.errors.zipCode && (
-                                    <Typography>
-                                        {formMik.errors.zipCode}
-                                    </Typography>
-                                )}
-                            </div>
-                        </div>
-                    )}
-                    {step === 3 && (
-                        <div>
-                            <div>
-                                <Typography>{"Your Username"}</Typography>
-                                <Input
-                                    inputType="text"
-                                    className="block border-neutral-400 border bg-gray-300"
-                                    name={"userName"}
-                                    value={formMik.values.userName}
-                                    onChange={formMik.handleChange("userName")}
-                                />
-                                {formMik.errors.userName && (
-                                    <Typography>
-                                        {formMik.errors.userName}
-                                    </Typography>
-                                )}
-                            </div>
-                            <div>
-                                <Typography>{"Your Password"}</Typography>
-                                <Input
-                                    inputType="password"
-                                    className="block border-neutral-400 border bg-gray-300"
-                                    name={"passWord"}
-                                    value={formMik.values.passWord}
-                                    onChange={formMik.handleChange("passWord")}
-                                />
-                                {formMik.errors.passWord && (
-                                    <Typography>
-                                        {formMik.errors.passWord}
-                                    </Typography>
-                                )}
-                            </div>
-                        </div>
-                    )}
+                    </form>
+                </CardContent>
+                <CardFooter>
                     <Button
-                        label={"Previous"}
-                        onClick={handlePrevious}
-                        type={"button"}
-                        className={"bg-green-500"}
-                    />
-                    <Button
-                        label={"Next"}
-                        onClick={handleNext}
-                        type={"button"}
-                        className={"bg-green-500"}
-                    />
-                    <Button
-                        label={"Submit"}
-                        type={"submit"}
-                        className={"bg-green-500"}
-                        disabled={!formMik.isValid}
-                    />
-                </form>
+                        variant="secondary"
+                        onClick={() => {
+                            navigate("/registerContainer");
+                        }}
+                    >
+                        Register an Account
+                    </Button>
+                </CardFooter>
             </Card>
-        </Card>
+        </>
     );
 };
 
