@@ -39,6 +39,8 @@ const ProductContainer = () => {
         if (data?.data.token) {
             localStorage.setItem("token", data.data.token);
         }
+
+        navigate("/categoryContent");
     };
 
     const formMik = useFormik({
