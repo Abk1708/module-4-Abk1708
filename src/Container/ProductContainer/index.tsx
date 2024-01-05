@@ -40,7 +40,7 @@ const ProductContainer = () => {
             localStorage.setItem("token", data.data.token);
         }
 
-        navigate("/categoryContent");
+        navigate("/categoryContainer");
     };
 
     const formMik = useFormik({
@@ -98,11 +98,11 @@ const ProductContainer = () => {
                                 {errors.email && <p>{errors.email}</p>}
                             </div>
                             <div>
-                                <Label htmlFor="passWord">Email</Label>
+                                <Label htmlFor="passWord">Pasword</Label>
                                 <Input
                                     name="passWord"
                                     type="password"
-                                    placeholder="@mail.com"
+                                    placeholder="Password"
                                     value={passWord}
                                     onChange={handleChange("passWord")}
                                     required
