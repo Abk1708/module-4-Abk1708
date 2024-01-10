@@ -38,12 +38,7 @@ const EditorContainer = () => {
     const setMessage = context?.setMessage;
 
     const { id } = useParams();
-    const {
-        handleSubmit,
-        control,
-        formState: { errors },
-        reset,
-    } = useForm({
+    const { handleSubmit, control, reset } = useForm({
         resolver: yupResolver(validationSchema),
     });
 

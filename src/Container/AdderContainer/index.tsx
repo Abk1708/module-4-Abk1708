@@ -37,11 +37,7 @@ const AdderContainer = () => {
     const setOpen = context?.setOpen;
     const setMessage = context?.setMessage;
 
-    const {
-        handleSubmit,
-        control,
-        formState: { errors },
-    } = useForm({
+    const { handleSubmit, control } = useForm({
         resolver: yupResolver(validationSchema),
     });
 
