@@ -24,7 +24,7 @@ const CategoryContainer = () => {
     const [rows, setRows] = useState<Category[]>([]);
 
     const handleEdit = (id: string) => () => {
-        navigate(`/edit/${id}`);
+        navigate(`/editorContainer/${id}`);
     };
 
     const token = window.localStorage.getItem("token");
@@ -69,6 +69,14 @@ const CategoryContainer = () => {
                 }}
             >
                 Logout
+            </Button>
+            <Button
+                variant="link"
+                onClick={() => {
+                    navigate("/adderContainer");
+                }}
+            >
+                Add New Category
             </Button>
             <Table>
                 <TableCaption>Category List.</TableCaption>

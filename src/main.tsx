@@ -6,6 +6,8 @@ import {
     ProductContainer,
     RegisterContainer,
     CategoryContainer,
+    AdderContainer,
+    EditorContainer,
 } from "@/Container";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -25,6 +27,14 @@ const router = createBrowserRouter([
             {
                 path: "/categoryContainer",
                 element: <CategoryContainer />,
+            },
+            {
+                path: "/adderContainer",
+                element: <AdderContainer />,
+            },
+            {
+                path: "/editorContainer/:id",
+                element: <EditorContainer />,
             },
         ],
     },

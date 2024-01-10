@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, CardContent } from "@/Component/ui/card";
 import { Button } from "@/Component/ui/button";
 import { Input } from "@/Component/ui/input";
@@ -10,53 +9,86 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/Component/ui/select";
-import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
-import axios, { AxiosError } from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import axios, { AxiosError } from "axios";
 import { AppContext, ContextType } from "../../Provider";
-import { useContext } from "react";
-// import { SelectContent, SelectItem } from "@radix-ui/react-select";
+import { useContext, useEffect } from "react";
 
 interface InterfaceProps {
+    id?: string;
     name?: string;
     status?: boolean;
 }
 
 const validationSchema = yup
     .object({
+        id: yup.string().required(),
         name: yup.string().required(),
         status: yup.boolean().required(),
     })
     .required();
 
-const AdderContainer = () => {
+const EditorContainer = () => {
     const navigate = useNavigate();
     const context = useContext<ContextType>(AppContext);
     const setOpen = context?.setOpen;
     const setMessage = context?.setMessage;
 
+    const { id } = useParams();
     const {
         handleSubmit,
         control,
         formState: { errors },
+        reset,
     } = useForm({
         resolver: yupResolver(validationSchema),
     });
-
-    const token = window.localStorage.getItem("token");
 
     const handleError = (message: string) => {
         setOpen?.(true);
         setMessage?.(message);
     };
 
+    const token = window.localStorage.getItem("token");
+
+    const getCategory = async () => {
+        try {
+            const response = await axios.get(
+                `https://mock-api.arikmpt.com/api/category/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            reset({
+                id: response.data.data.id,
+                name: response.data.data.name,
+                status: response.data.data.status,
+            });
+        } catch (error) {
+            const err = error as AxiosError as any;
+            const errors = err.response?.data?.errors;
+            if (Array.isArray(errors)) {
+                return;
+            }
+            handleError(errors);
+        }
+    };
+
+    useEffect(() => {
+        getCategory();
+    }, [id]);
+
     const onSubmit = async (data: InterfaceProps) => {
         try {
-            await axios.post(
-                "https://mock-api.arikmpt.com/api/category/create",
+            await axios.put(
+                "https://mock-api.arikmpt.com/api/category/update",
                 {
+                    id: id,
                     name: data.name,
                     is_active: data.status,
                 },
@@ -82,11 +114,11 @@ const AdderContainer = () => {
         <div className="login-box">
             <Card>
                 <CardContent className={"login-content"}>
-                    <h2>Add New Category</h2>
+                    <h2>Edit Category</h2>
                     <Button
                         variant="secondary"
                         onClick={() => {
-                            navigate("/categoryContent");
+                            navigate("/categoryContainer");
                         }}
                     >
                         Return
@@ -148,4 +180,4 @@ const AdderContainer = () => {
     );
 };
 
-export default AdderContainer;
+export default EditorContainer;

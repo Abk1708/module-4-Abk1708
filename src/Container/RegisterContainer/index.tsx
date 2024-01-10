@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -41,6 +40,7 @@ const RegisterCard = () => {
 
         const data = await response.json();
         console.log(data);
+        navigate("/");
     };
 
     const formMik = useFormik({
