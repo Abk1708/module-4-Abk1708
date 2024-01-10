@@ -82,7 +82,7 @@ const AdderContainer = () => {
                     <Button
                         variant="secondary"
                         onClick={() => {
-                            navigate("/categoryContent");
+                            navigate("/categoryContainer");
                         }}
                     >
                         Return

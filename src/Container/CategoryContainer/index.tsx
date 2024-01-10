@@ -16,7 +16,7 @@ import { Button } from "@/Component/ui/button";
 interface Category {
     id: string;
     name: string;
-    status: boolean;
+    is_active: boolean;
 }
 
 const CategoryContainer = () => {
@@ -65,6 +65,7 @@ const CategoryContainer = () => {
             <Button
                 variant="link"
                 onClick={() => {
+                    localStorage.removeItem("token");
                     navigate("/");
                 }}
             >
@@ -96,7 +97,7 @@ const CategoryContainer = () => {
                             </TableCell>
                             <TableCell>{row.name}</TableCell>
                             <TableCell>
-                                {row.status ? "Active" : "Disabled"}
+                                {row.is_active ? "Active" : "Disabled"}
                             </TableCell>
                             <TableCell className="text-right">
                                 <div className="action">
